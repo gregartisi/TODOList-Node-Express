@@ -1,0 +1,16 @@
+<h1>To do list:</h1>
+
+<!-- formulaire d'ajout de tâche-->
+<% if(locals.todo){%>
+Liste de <%=todo.length%> tâches à executer:
+<ul>
+<% for(var i=0;i<todo.length;i++) { %>
+	<li id="li<%=i%>"><a href="/todo/remove/<%=i%>" style="color:black;font-weight:bold;text-decoration:none;">&check;</a> <%=todo[i]%></li>
+<% } %>
+</ul>
+<% }%>
+<form name="add" action="/todo/add" method="POST">
+
+	<label for="todo">ADD TO LIST:</label> <input type="text" name="todo">
+	<input type="submit" value="add">
+</form>
