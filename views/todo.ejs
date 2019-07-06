@@ -1,5 +1,6 @@
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script><!--Jquery-->
 <script src="/socket.io/socket.io.js"></script><!--socket io pour communiquer via websocket-->
+<link rel="stylesheet" href="/todo.css">
 <script>var socket = io.connect('http://localhost:8080/');<!--conexion au serveur--><script>
   
 //fonction qui crée un champ de taxte editable à la place de la task
@@ -26,29 +27,33 @@
 			 
 			 socket.on('task', function(todo) {
 				console.log(todo.texte);
-				line = '<li id="li'+todo.num+'"><a href="#" onclick="remove('+todo.num+')" style="color:black;font-weight:bold;text-decoration:none;">&check;</a> <span id="span'+todo.num+'">'+todo.texte+'</span> </li>';
+				line = '<li id="li'+todo.num+'"><span id="span'+todo.num+'">'+todo.texte+'</span> <a href="#" onclick="remove('+todo.num+')"  id="check">&check;</a> </li>';
                 $('#liste').append(line);
+				$('#taskNum').html(todo.count+" tâches à executer:");
             })
 			socket.on('del', function(task) {
 				
-				line = '#li'+task;
+				line = '#li'+task.task;
 				$(line).remove();
+				$('#taskNum').html(task.count+" tâches à executer:");
             })
 </script>
- 
+ <div id="page">
 <h1>To do list:</h1>
 
-<!-- formulaire d'ajout de tâche-->
-<% if(locals.todo){%>
-Liste de <%=todo.size%> tâches à executer:
-<ul id="liste">
+<div id="todo">
+		
+		<% if(locals.todo){%>
+		<h3 id="taskNum"><%=todo.size%> tâches à executer:</h3>
+		<ul id="liste">
 
-<% for(let [key, value] of todo) { %>
-	<li id="li<%=key%>"><a href="#" onclick="remove(<%=key%>)" style="color:black;font-weight:bold;text-decoration:none;">&check;</a> <span id='span<%=key%>'><%=value%></span> </li> 
-<% } %>
-</ul>
-<% }%>
+		<% for(let [key, value] of todo) { %>
+			<li id="li<%=key%>"><span id='span<%=key%>'><%=value%></span>  <a href="#" onclick="remove(<%=key%>)"  id="check">&check;</a> </li> 
+		<% } %>
+		</ul>
+		<% }%>
+</div>
+ <label for="Addtodo"><img src="/pluspt1.jpg"> AJOUTER UNE TACHE:</label> <input type="text" id="Addtodo" name="todo">
+	<input type="submit" value="add" class="submit" onclick="add($('#Addtodo').val());">
  
- <label for="todo">ADD TO LIST:</label> <input type="text" id="todo" name="todo">
-	<input type="submit" value="add"  onclick="add($('#todo').val());">
- 
+</div>
