@@ -1,8 +1,6 @@
 var express = require('express');//libraiie express.js
 var jquery = require('jquery');
-var cookieParser = require('cookie-parser');
 var bodyParser = require("body-parser");
-var session = require('express-session');
 var url = require('url');//appel à la librairie url qui permet de créer des adresses
 var querystring = require('querystring');//permet de parser les paramètres de requêtes
 var http = require('http');//node http lib
@@ -10,19 +8,21 @@ var http = require('http');//node http lib
 
 var app = express();
 var server = require('http').createServer(app);//création d'un server à partir de l'app express
+
 // Chargement de socket.io
 var io = require('socket.io').listen(server);
-//todo list
+
+
+//todo list sous forme de map clé/valeur(ES6)
 var todoList= new Map();
-var sizeList =0;
+var sizeList =0; //clé, numéro unique incrémenté à chaque ajout
 
 // utiliser le module de parsing pour créer une variable "body automatiquement", cette variable permet de récupérer les paramètres de requête
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(session({secret: 'ssshhhhh',saveUninitialized: true,resave: true}));
+//initialisation d'un dossier public ou se trouve des librairies js et css
 app.use(express.static('public'))
 
-
+//routage express
 app.get('/', function(req, res) {
     res.setHeader('Content-Type', 'text/plain');
     res.send('Vous êtes à l\'accueil');
@@ -53,8 +53,8 @@ io.sockets.on('connection', function (socket) {
 		num = sizeList;
 		 
 		console.log(task+"  "+num);
-		socket.emit('task',{'texte':task,'num':num});
-		socket.broadcast.emit('task',{'texte':task,'num':num}); // Send message to everyone BUT sender
+		socket.emit('task',{'texte':task,'num':num, 'count':todoList.size});
+		socket.broadcast.emit('task',{'texte':task,'num':num, 'count':todoList.size}); // Send message to everyone BUT sender
 		sizeList ++;
     });	
 	
@@ -62,8 +62,8 @@ io.sockets.on('connection', function (socket) {
         console.log(task);
 		todoList.delete(task);
 		
-		socket.emit('del',task);
-		socket.broadcast.emit('del',task); // Send message to everyone BUT sender
+		socket.emit('del',{'task':task,'count':todoList.size});
+		socket.broadcast.emit('del',{'task':task,'count':todoList.size}); // Send message to everyone BUT sender
 		
     });	
 });
