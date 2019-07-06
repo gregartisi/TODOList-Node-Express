@@ -1,17 +1,54 @@
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script><!--Jquery-->
+<script src="/socket.io/socket.io.js"></script><!--socket io pour communiquer via websocket-->
+<script>var socket = io.connect('http://localhost:8080/');<!--conexion au serveur--><script>
+  
+//fonction qui crée un champ de taxte editable à la place de la task
+			 function makeEditable(task,text){
+			   console.log(task);
+				
+				var h = '<form name="edit" action="/todo/edit" method="POST"><input type="text" id="newText" name="newText" value="'+text+'"><input type="button" onclick="save(\''+task+'\',\''+text+'\');" value="OK"></form>';
+				
+				var node= '#span'+task;
+				$(node).html(h);
+			 }
+			 
+			 //fonction qui envoie la tache à mettre à jour au serveur, pour cela on utilise socket io
+			 function save(task,text){
+				socket.emit('edit', {'task':task,'textT':text});
+				
+			 }
+			 function add(text){
+				socket.emit('add', text);
+			 }
+			 function remove(task){
+				socket.emit('remove', task);
+			 }
+			 
+			 socket.on('task', function(todo) {
+				console.log(todo.texte);
+				line = '<li id="li'+todo.num+'"><a href="#" onclick="remove('+todo.num+')" style="color:black;font-weight:bold;text-decoration:none;">&check;</a> <span id="span'+todo.num+'">'+todo.texte+'</span> </li>';
+                $('#liste').append(line);
+            })
+			socket.on('del', function(task) {
+				
+				line = '#li'+task;
+				$(line).remove();
+            })
+</script>
+ 
 <h1>To do list:</h1>
 
 <!-- formulaire d'ajout de tâche-->
 <% if(locals.todo){%>
-Liste de <%=todo.length%> tâches à executer:
-<ul>
-<% for(var i=0;i<todo.length;i++) { %>
-	<li id="li<%=i%>"><a href="/todo/remove/<%=i%>" style="color:black;font-weight:bold;text-decoration:none;">&check;</a> <%=todo[i]%></li>
+Liste de <%=todo.size%> tâches à executer:
+<ul id="liste">
+
+<% for(let [key, value] of todo) { %>
+	<li id="li<%=key%>"><a href="#" onclick="remove(<%=key%>)" style="color:black;font-weight:bold;text-decoration:none;">&check;</a> <span id='span<%=key%>'><%=value%></span> </li> 
 <% } %>
 </ul>
 <% }%>
-<form name="add" action="/todo/add" method="POST">
-
-	<label for="todo">ADD TO LIST:</label> <input type="text" name="todo">
-	<input type="submit" value="add">
-</form>
+ 
+ <label for="todo">ADD TO LIST:</label> <input type="text" id="todo" name="todo">
+	<input type="submit" value="add"  onclick="add($('#todo').val());">
  
