@@ -1,0 +1,33 @@
+#page{ 
+	width:100%;
+	padding-left:50px;
+	overflow:hidden;
+}
+
+#todo{
+	
+	width:400px;
+	border-radius: 25px;
+	border: 2px solid red;
+	padding: 20px; 
+	margin-bottom:50px;
+	box-shadow: 2px 2px 5px red;
+}
+a#check:link, a#check:visited{
+	color:green;
+	font-weight:bold;text-decoration:none;
+
+}
+a#check:hover{color:red;font-weight:bold;text-decoration:none;}
+
+h3{
+	margin:0;
+	text-decoration:underline;
+}
+
+.submit{
+	border-radius: 5px;
+    background: none;
+    border: 1px solid grey;
+}
+img{height:10px;}
