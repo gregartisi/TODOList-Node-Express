@@ -29,7 +29,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/todo', function(req, res) {
-	
+		console.log(todoList);
 		res.render('todo.ejs',{todo:todoList});
 	
 });
@@ -41,10 +41,12 @@ io.sockets.on('connection', function (socket) {
 	
 	/*edit d'une task*/
 	socket.on('edit', function (task) {
-		console.log("back "+task.task);
-        todoList[task.task]=task.texte;
-		socket.emit('edit',{'task':task.task,'txt':todoList[task.task]});
-		socket.broadcast.emit('edit',{'task':task.task,'txt':todoList[task.task]}) // Send message to everyone BUT sender
+		
+		todoList.delete(task.task);
+		todoList.set(task.task,task.texte);
+		console.log(todoList);
+		socket.emit('edit',{'task':task.task,'txt':todoList.get(task.task)});
+		socket.broadcast.emit('edit',{'task':task.task,'txt':todoList.get(task.task)}) // Send message to everyone BUT sender
 		
     });	
 	/*ajout d'une task renvoyé vers tous les clients*/
