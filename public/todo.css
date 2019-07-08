@@ -2,7 +2,8 @@
 @import url('https://fonts.googleapis.com/css?family=Kalam|Open+Sans&display=swap');
 
 body{
-	background-color: whitesmoke;
+	/*background-color: whitesmoke;*/
+	background-image:url("bg.png");
 }
 #page{ 
 	width:100%;
@@ -19,6 +20,8 @@ h1{
 #addTask{
 	margin-top:30px;
 	margin-bottom:30px;
+	
+	
 }
 #todo{
 	
