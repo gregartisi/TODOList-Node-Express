@@ -1,17 +1,35 @@
+
+@import url('https://fonts.googleapis.com/css?family=Kalam|Open+Sans&display=swap');
+
+body{
+	background-color: whitesmoke;
+}
 #page{ 
 	width:100%;
+	height: 100%;
 	padding-left:50px;
 	overflow:hidden;
+	
+	
 }
-
+h1{
+	font-family: "kalam";
+	text-decoration:underline;
+}
+#addTask{
+	margin-top:30px;
+	margin-bottom:30px;
+}
 #todo{
 	
-	width:400px;
+	width:600px;
 	border-radius: 25px;
-	border: 2px solid red;
+	border: 2px solid rgba(8, 0, 0, 0.171);
 	padding: 20px; 
 	margin-bottom:50px;
-	box-shadow: 2px 2px 5px red;
+	box-shadow: 2px 2px 5px black;
+	background-image: url("papier.jpg");
+	font-family:"kalam";
 }
 a#check:link, a#check:visited{
 	color:green;
@@ -23,6 +41,7 @@ a#check:hover{color:red;font-weight:bold;text-decoration:none;}
 h3{
 	margin:0;
 	text-decoration:underline;
+	font-family:"kalam";
 }
 
 .submit{
