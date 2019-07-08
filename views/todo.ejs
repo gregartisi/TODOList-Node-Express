@@ -7,9 +7,9 @@
 			 function makeEditable(task,text){
 			   console.log(task);
 				
-				var h = '<form name="edit" action="/todo/edit" method="POST"><input type="text" id="newText" name="newText" value="'+text+'"><input type="button" onclick="save(\''+task+'\',$(\'#newText\').val());" value="OK"></form>';
+				var h = '<span id="span'+task+'"><input type="text" id="newText" name="newText" value="'+text+'"><input type="button" onclick="save(\''+task+'\',$(\'#newText\').val());" value="OK"></span>';
 				
-				var node= '#span'+task;
+				var node= '#li'+task;
 				$(node).html(h);
 			 }
 			 
