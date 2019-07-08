@@ -45,10 +45,16 @@
             })
 </script>
  <div id="page">
-<h1>To do list:</h1>
+
+
+<div id="addTask">
+	<label for="Addtodo"><img src="/pluspt1.jpg"> AJOUTER UNE TACHE:</label> <input type="text" id="Addtodo" name="todo">
+	<input type="submit" value="add" class="submit" onclick="add($('#Addtodo').val());">
+ </div>
+
 
 <div id="todo">
-		
+	<h1>My todo list:</h1>
 		<% if(locals.todo){%>
 		<h3 id="taskNum"><%=todo.size%> tâches à executer:</h3>
 		<ul id="liste">
@@ -59,7 +65,5 @@
 		</ul>
 		<% }%>
 </div>
- <label for="Addtodo"><img src="/pluspt1.jpg"> AJOUTER UNE TACHE:</label> <input type="text" id="Addtodo" name="todo">
-	<input type="submit" value="add" class="submit" onclick="add($('#Addtodo').val());">
- 
+
 </div>
