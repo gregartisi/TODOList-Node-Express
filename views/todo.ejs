@@ -7,7 +7,7 @@
 			 function makeEditable(task,text){
 			   console.log(task);
 				
-				var h = '<form name="edit" action="/todo/edit" method="POST"><input type="text" id="newText" name="newText" value="'+text+'"><input type="button" onclick="save(\''+task+'\',\''+text+'\');" value="OK"></form>';
+				var h = '<form name="edit" action="/todo/edit" method="POST"><input type="text" id="newText" name="newText" value="'+text+'"><input type="button" onclick="save(\''+task+'\',$(\'#newText\').val());" value="OK"></form>';
 				
 				var node= '#span'+task;
 				$(node).html(h);
@@ -15,7 +15,8 @@
 			 
 			 //fonction qui envoie la tache à mettre à jour au serveur, pour cela on utilise socket io
 			 function save(task,text){
-				socket.emit('edit', {'task':task,'textT':text});
+				 console.log("edit");
+				socket.emit('edit', {'task':task,'texte':text});
 				
 			 }
 			 function add(text){
@@ -24,10 +25,15 @@
 			 function remove(task){
 				socket.emit('remove', task);
 			 }
-			 
+			 socket.on('edit', function(task) {
+				
+				line = '#li'+task.task; console.log("Front: "+task.task+" texte: "+task.txt);
+				$(line).html('<span id="span'+task.task+'">'+task.txt+'</span> <a href="#" onclick="remove('+task.task+')"  id="check">&check;</a> <a href="#" onclick="makeEditable('+task.task+',\''+task.txt+'\')">Edit</a>');
+				
+            })
 			 socket.on('task', function(todo) {
 				console.log(todo.texte);
-				line = '<li id="li'+todo.num+'"><span id="span'+todo.num+'">'+todo.texte+'</span> <a href="#" onclick="remove('+todo.num+')"  id="check">&check;</a> </li>';
+				line = '<li id="li'+todo.num+'"><span id="span'+todo.num+'">'+todo.texte+'</span> <a href="#" onclick="remove('+todo.num+')"  id="check">&check;</a> <a href="#" onclick="makeEditable('+todo.num+',\''+todo.texte+'\')">Edit</a></li>';
                 $('#liste').append(line);
 				$('#taskNum').html(todo.count+" tâches à executer:");
             })
@@ -48,7 +54,7 @@
 		<ul id="liste">
 
 		<% for(let [key, value] of todo) { %>
-			<li id="li<%=key%>"><span id='span<%=key%>'><%=value%></span>  <a href="#" onclick="remove(<%=key%>)"  id="check">&check;</a> </li> 
+			<li id="li<%=key%>"><span id='span<%=key%>'><%=value%></span>  <a href="#" onclick="remove(<%=key%>)"  id="check">&check;</a> <a href="#" onclick="makeEditable(<%=key%>,'<%=value%>')">Edit</a></li> 
 		<% } %>
 		</ul>
 		<% }%>
