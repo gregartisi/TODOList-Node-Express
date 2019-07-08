@@ -1,5 +1,6 @@
 Basic Application Node.js to manage a todo list. you can:
 -add things to your to do list
+edit tasks in the list
 -delete things from the list
 -the list is shared in real time with other users by websockets
 
