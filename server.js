@@ -41,25 +41,25 @@ io.sockets.on('connection', function (socket) {
 	
 	/*edit d'une task*/
 	socket.on('edit', function (task) {
-        todoList[task.task]=task.textT;
-		socket.emit('todoList',todoList);
-		socket.broadcast.emit('todoList',todoList); // Send message to everyone BUT sender
+		console.log("back "+task.task);
+        todoList[task.task]=task.texte;
+		socket.emit('edit',{'task':task.task,'txt':todoList[task.task]});
+		socket.broadcast.emit('edit',{'task':task.task,'txt':todoList[task.task]}) // Send message to everyone BUT sender
 		
     });	
 	/*ajout d'une task renvoyé vers tous les clients*/
 	socket.on('add', function (task) {
-        console.log(task);
+       
 		todoList.set(sizeList,task);
 		num = sizeList;
 		 
-		console.log(task+"  "+num);
 		socket.emit('task',{'texte':task,'num':num, 'count':todoList.size});
 		socket.broadcast.emit('task',{'texte':task,'num':num, 'count':todoList.size}); // Send message to everyone BUT sender
 		sizeList ++;
     });	
 	
 	socket.on('remove', function (task) {
-        console.log(task);
+        
 		todoList.delete(task);
 		
 		socket.emit('del',{'task':task,'count':todoList.size});
@@ -73,4 +73,4 @@ app.use(function(req, res, next){
     res.status(404).send('Page introuvable !');
 });
 
-server.listen(8080, "127.0.0.1");
+server.listen(8080, "0.0.0.0");
